@@ -1,1 +1,3 @@
-1.0.1: First version of AzureADSSO
+1.0.1:
+    - First version of AzureADSSO
+    - add_azure_id_backend_users.php

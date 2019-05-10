@@ -1,0 +1,22 @@
+{
+    "name": "luketowers/oc-azureadsso-plugin",
+    "type": "october-plugin",
+    "description": "OctoberCMS plugin to add support for logging into the backend with Azure AD SSO OAuth.",
+    "keywords": ["october", "octobercms", "laravel", "azure", "sso", "single sign on", "active directory"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Luke Towers",
+            "email": "octobercms@luketowers.ca"
+        }
+    ],
+    "require": {
+        "composer/installers": "~1.0",
+        "metrogistics/laravel-azure-ad-oauth": "^1.2"
+    },
+    "autoload": {
+        "files": [
+            "helpers.php"
+        ]
+    }
+}
