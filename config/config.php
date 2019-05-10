@@ -1,5 +1,15 @@
 <?php return [
     'packages' => [
+        'laravel/socialite' => [
+            'providers' => [
+                '\Laravel\Socialite\SocialiteServiceProvider',
+            ],
+
+            'aliases' => [
+                '\Laravel\Socialite\Facades\Socialite',
+            ],
+        ],
+
         'metrogistics/laravel-azure-ad-oauth' => [
             'providers' => [
                 '\Metrogistics\AzureSocialite\ServiceProvider'
@@ -35,6 +45,9 @@
 
                 // The User Eloquent class.
                 'user_class' => '\Backend\Models\User',
+
+                // Code for the default role to assign new users
+                'default_role_code' => false, // 'publisher'
 
                 // How much time should be left before the access
                 // token expires to attempt a refresh.

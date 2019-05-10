@@ -9,7 +9,7 @@ class AddAzureIdBackendUsers extends Migration
     {
         if (!Schema::hasColumn('backend_users', 'azure_id')) {
             Schema::table('backend_users', function ($table) {
-                $table->string('azure_id');
+                $table->string('azure_id')->nullable();
             });
         }
     }

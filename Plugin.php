@@ -4,6 +4,7 @@ use App;
 use View;
 use Event;
 use Config;
+use Backend\Models\UserRole;
 use System\Classes\PluginBase;
 use System\Classes\CombineAssets;
 use Illuminate\Foundation\AliasLoader;
@@ -38,15 +39,19 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+        $this->app->bind('Illuminate\Contracts\Auth\Factory', function () {
+            return \Backend\Classes\AuthManager::instance();
+        });
+
         AuthController::extend(function($controller) {
-            $controller->bindEvent('page.beforeDisplay', function ($action, $params) {
-                if ($action === 'params') {
+            $controller->bindEvent('page.beforeDisplay', function ($action, $params) use ($controller) {
+                if ($action === 'signin') {
                     $controller->addCss(CombineAssets::combine(['azureadsso.css'], plugins_path('luketowers/azureadsso/assets/css/')));
                 }
             });
         });
 
-        Event::listen('backend.auth.extendSigninView', function($controller) {
+        Event::listen('backend.auth.extendSigninView', function ($controller) {
             return View::make("luketowers.azureadsso::login");
         });
 
@@ -112,8 +117,14 @@ class Plugin extends PluginBase
             if (empty($newUser->email) && !empty($newUser->alt_email)) {
                 $newUser->email = $newUser->alt_email;
             }
+            if (empty($newUser->login)) {
+                $newUser->login = $newUser->email;
+            }
 
-            // @TODO: Enable assigning a default role to new users
+            // Assign the default role if provided
+            if ($code = Config::get('azure-oath.default_role_code')) {
+                $newUser->role_id = UserRole::select('id', 'code')->where('code', $code)->first()->id;
+            }
 
             // Clean up
             unset($newUser->attributes['alt_email']);
