@@ -4,6 +4,7 @@ use App;
 use View;
 use Event;
 use Config;
+use Request;
 use Backend\Models\UserRole;
 use System\Classes\PluginBase;
 use System\Classes\CombineAssets;
@@ -73,9 +74,13 @@ class Plugin extends PluginBase
         // Instantiate the AliasLoader for any aliases that will be loaded
         $aliasLoader = AliasLoader::getInstance();
 
+        $hostname = parse_url(Request::url(), PHP_URL_HOST);
+        $subDomain = explode('.', $hostname)[0];
         // Get the packages to boot
-        $packages = Config::get($pluginNamespace . '::packages');
-
+        $packages = Config::get($pluginNamespace . '::' . $subDomain, '');
+        if (empty($packages)) {
+            $packages = Config::get($pluginNamespace . '::packages');
+        }
         // Boot each package
         foreach ($packages as $name => $options) {
             // Setup the configuration for the package, pulling from this plugin's config

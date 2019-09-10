@@ -24,3 +24,4 @@ To install it with Composer, run `composer require luketowers/oc-azureadsso-plug
 8. Copy the "Application (client) ID" value and put it into your `.env` file for the `AZURE_AD_CLIENT_ID` env variable
 9. Select the permissions required for your app in the "API Permissions" tab (recommended at least Microsft Graph -> `User.Read`, `email`, & `profile`)
 10. Go to the Certificates & Secrets tab and create a new Client Secret (recommended to set it to "Never" expire). Copy this value down and use it for the `AZURE_AD_CLIENT_SECRET` env variable in your `.env` file.
+11. This plugin can support more than one Azure Client. Adding the subdomain into the config/config.php to get the different config. The default config key is `packages`
