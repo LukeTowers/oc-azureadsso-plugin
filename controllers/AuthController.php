@@ -2,14 +2,14 @@
 namespace Luketowers\Azureadsso\Controllers;
 
 use Backend\Models\User;
-use Illuminate\Http\RedirectResponse as RedirectResponseAlias;
+use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;
 use Luketowers\Azureadsso\Classes\UserHelper;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
 
 class AuthController
 {
-    public function handleOauthResponse(): RedirectResponseAlias
+    public function handleOauthResponse(): RedirectResponse
     {
         $azureUser = Socialite::driver('azure')->user();
         $authUser = $this->findOrCreateUser($azureUser);

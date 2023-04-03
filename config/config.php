@@ -6,8 +6,8 @@
             'config' => [
                 'client_id' => env('AZURE_AD_CLIENT_ID', ''),
                 'client_secret' => env('AZURE_AD_CLIENT_SECRET', ''),
-                'redirect' => Request::root().'/luketowers/azureadsso/login/microsoft/callback',
-                'tenant' => env('AZURE_TENANT_ID'),
+                'redirect' => Request::root() . '/luketowers/azureadsso/login/microsoft/callback',
+                'tenant' => env('AZURE_TENANT_ID', 'consumers'),
                 'cms_role_code' => false,
             ]
         ]
