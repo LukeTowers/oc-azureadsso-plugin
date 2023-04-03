@@ -1,5 +1,7 @@
 <?php
 
+
+
 if (! function_exists('auth')) {
     /**
      * Get the available auth instance.

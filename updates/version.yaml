@@ -1,3 +1,5 @@
 1.0.1:
     - First version of AzureADSSO
     - add_azure_id_backend_users.php
+1.2.0:
+    - Change Socialite provider from metrogistics provider to official Socialite Azure provider
