@@ -4,7 +4,6 @@ use App;
 use View;
 use Event;
 use Config;
-use Backend\Models\UserRole;
 use System\Classes\PluginBase;
 use System\Classes\CombineAssets;
 use Illuminate\Foundation\AliasLoader;
@@ -39,6 +38,9 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+        App::register(\SocialiteProviders\Manager\ServiceProvider::class);
+        App::register(ServiceProvider::class);
+
         $this->app->bind('Illuminate\Contracts\Auth\Factory', function () {
             return \Backend\Classes\AuthManager::instance();
         });
@@ -56,7 +58,6 @@ class Plugin extends PluginBase
         });
 
         $this->bootPackages();
-        $this->extendAzureAD();
     }
 
     /**
@@ -97,37 +98,5 @@ class Plugin extends PluginBase
                 }
             }
         }
-    }
-
-    /**
-     * Extend the base library used to make it compatible with OctoberCMS
-     *
-     * @return void
-     */
-    protected function extendAzureAD()
-    {
-        // Process the user object before saving it
-        \Metrogistics\AzureSocialite\UserFactory::userCallback(function($newUser) {
-            // Generate a random password for the user
-            $pass = str_random(60);
-            $newUser->password = $pass;
-            $newUser->password_confirmation = $pass;
-
-            // Ensure that the user has an email address
-            if (empty($newUser->email) && !empty($newUser->alt_email)) {
-                $newUser->email = $newUser->alt_email;
-            }
-            if (empty($newUser->login)) {
-                $newUser->login = $newUser->email;
-            }
-
-            // Assign the default role if provided
-            if ($code = Config::get('azure-oath.default_role_code')) {
-                $newUser->role_id = UserRole::select('id', 'code')->where('code', $code)->first()->id;
-            }
-
-            // Clean up
-            unset($newUser->attributes['alt_email']);
-        });
     }
 }
